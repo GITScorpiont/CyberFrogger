@@ -7,6 +7,7 @@ self.up = up
 self.down = down
 self.left = left
 self.right = right
+self.skill = skill
 
 
 self.change = function(dt)
@@ -15,11 +16,13 @@ self.change = function(dt)
 		self.down = "down"
 		self.left = "left"
 		self.right = "right"
+		self.skill = "space"
 	else
 		self.up = "w"
 		self.down = "s"
 		self.left = "a"
 		self.right = "d"
+		self.skill = "space"
 
 	end 
 end

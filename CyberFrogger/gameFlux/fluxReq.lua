@@ -1,6 +1,8 @@
 	
 	--> libraries requires <--
+sti = require'libs.sti'
 Gamestate = require'libs.hump.gamestate'
+camera = require'libs.hump.camera'
 wf = require'libs.windfield'
 anim8 = require'libs.anim8'
 

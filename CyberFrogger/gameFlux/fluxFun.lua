@@ -1,5 +1,12 @@
 function spawnFlux()
 
+	--> worldMaps <--
+	initialStreet = sti("maps/normalStreet.lua")
+	gameMap = initialStreet
+	--> cameras <--
+
+	cam = camera()
+
 	--> sets the game diff <--
 	score = level * 10
 
@@ -9,15 +16,19 @@ function spawnFlux()
 	world:addCollisionClass('cars')
 	world:addCollisionClass('shooters')
 
+    --> objects custom vars <--
+
+    carSpeed = screenW/16
+
 	--> spawning objects <--
 
-	player = Player.spawn(world,screenW/2,screenH - 16,300,playerSz,"line")
-	carA = Car.spawn(world,love.math.random(0,screenW),screenH - screenH/7,260,love.math.random(carMaxSz,carMaxSz),"line")
-	carB = Car.spawn(world,love.math.random(0,screenW),screenH - (screenH/7)*2,(260)*(-1),love.math.random(carMaxSz,carMaxSz),"line")
-	carC = Car.spawn(world,love.math.random(0,screenW),screenH - (screenH/7)*3,260,love.math.random(carMinisz,carMaxSz),"line")
-	carD = Car.spawn(world,love.math.random(0,screenW),screenH - (screenH/7)*4,(260)*(-1),love.math.random(carMinisz,carMaxSz),"line")
-	carE = Car.spawn(world,love.math.random(0,screenW),screenH - (screenH/7)*5,260,love.math.random(carMinisz,carMaxSz),"line")
-	carF = Car.spawn(world,love.math.random(0,screenW),screenH - (screenH/7)*6,(260)*(-1),love.math.random(carMinisz,carMaxSz),"line")
+	player = Player.spawn(world,screenW/2,screenH ,screenH/2,playerSz,"line","dasher")
+	carA = Car.spawn(world,love.math.random(0,screenW),screenH - screenH/7,carSpeed,carSize)
+	carB = Car.spawn(world,love.math.random(0,screenW),screenH - (screenH/7)*2,carSpeed*(-1),carSize)
+	carC = Car.spawn(world,love.math.random(0,screenW),screenH - (screenH/7)*3,carSpeed,carSize)
+	carD = Car.spawn(world,love.math.random(0,screenW),screenH - (screenH/7)*4,carSpeed*(-1),carSize)
+	carE = Car.spawn(world,love.math.random(0,screenW),screenH - (screenH/7)*5,carSpeed,carSize)
+	carF = Car.spawn(world,love.math.random(0,screenW),screenH - (screenH/7)*6,carSpeed*(-1),carSize)
 
 	--> the crazy randomic functions on the x and y sizes defines a random spawn in the x on the screen and a pathfinding on the y (i don't know if its are correct)
 end
@@ -33,7 +44,13 @@ function fluxUpdate(dt)
 	carD:updateCar(dt)
 	carE:updateCar(dt)
 	carF:updateCar(dt)
+	--> cam lock at map(kill the black borders) <--
 
+	mWidth = gameMap.width * gameMap.tilewidth
+	mHeight = gameMap.height * gameMap.tileheight
+
+	wSize = screenW/mWidth
+	hSize = screenH/mHeight
 end 
 
 function fluxDraw()
@@ -41,14 +58,16 @@ function fluxDraw()
 	--> draws the physics world <--
 	   --world:draw(120)
 	--> drawing the game <--
-		
-		player:draw()
-		carA:draw()
-		carB:draw()
-		carC:draw()
-		carD:draw()
-		carE:draw()
-		carF:draw()
+		cam:attach()
+			gameMap:draw(nil,nil,wSize,hSize)
+			player:draw()
+			carA:draw()
+			carB:draw()
+			carC:draw()
+			carD:draw()
+			carE:draw()
+			carF:draw()
+		cam:detach()
 
     --> print the fps <--
 		love.graphics.print("CurrentFPS = "..love.timer.getFPS())

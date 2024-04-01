@@ -1,7 +1,7 @@
 
 Car = {}
 
-Car.spawn = function(world,x,y,speed,sz,mode)
+Car.spawn = function(world,x,y,speed,sz)
 local self = self or {}
 
 --local sprites loading
@@ -14,14 +14,49 @@ self.world = world
 self.x = x
 self.y = y
 self.speed = speed
-self.w = sz * 4
-self.h = sz
-self.mode = mode
-self.density = 500
+self.sz = sz
+self.w = self.sz
+self.h = self.sz
+self.sprite = nil
+
+veicleType = function()
+
+	--> Bikes = 1
+
+	--> Cars = 2
+
+	--> Trucks = 3
+
+
+	self.type = love.math.random(1,3)
+		
+	if self.type == 1 then
+		self.w = self.w * 2
+		self.speed = self.speed * 2 
+		self.sprite = self.spriteGreen
+	end
+
+	if self.type == 2 then
+		self.h = self.h *1.5
+		self.w = self.w * 3
+		self.sprite = self.spriteBlue
+	end
+
+	if self.type == 3 then
+		self.h = self.h * 1.5
+		self.w = self.w * 6
+		self.speed = self.speed * 0.75
+		self.sprite = self.spriteRed
+	end
+
+end
+
+veicleType()
+
 
 	--> self physics <--
 	self.body = world:newBSGRectangleCollider(self.x,self.y,self.w,self.h,self.h/6)
-	self.body:setType("kinematic")
+	self.body:setType("dynamic")
 	self.body:setCollisionClass('cars')
 	--> self functions <-- 
 	self.updateCar = function(dt)
@@ -41,23 +76,6 @@ self.density = 500
 			self.body:setX(0 - self.w)
 		end
 	end
-	
-	rSprite = function()
-		sPick = love.math.random(1,3)
-			if sPick == 1 then
-				self.sprite = self.spriteBlue
-			end  
-
-			if sPick == 2 then
-				self.sprite = self.spriteRed
-			end
-
-			if sPick == 3 then
-				self.sprite = self.spriteGreen
-			end
-	end
-
-	rSprite()
 	
 	self.draw = function()
 		love.graphics.draw(self.sprite,self.body:getX() - self.w/2,self.body:getY() - self.h/2,nil,self.w/64,self.h/64)

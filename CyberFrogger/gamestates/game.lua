@@ -5,8 +5,8 @@ function game:enter()
 	level = 1
 
 	--> game objects sizing vars <--
-	carMinisz = screenH/24
-	carMaxSz = screenH/10
+	carSize = screenH/16
+
 	playerSz = screenH/50
 
 	--> calls the basics functions <--  
@@ -19,7 +19,7 @@ function game:update(dt)
 
 	--> updating level(the diff of the game) <--
 
-	if player.body:getY() <= 16 then
+	if player.body:getY() < 16 then
 		level = level + 0.5
 		Gamestate.switch(nRandomLevel)
 	end
